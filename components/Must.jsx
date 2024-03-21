@@ -17,9 +17,24 @@ const Must = () => {
   const [selectedVehicle, setSelectedVehicle] = useState(null);
   const [bookingBoxVisible, setBookingBoxVisible] = useState(false);
   const [passengerDetails, setPassengerDetails] = useState([]);
-  const currentUser = 'kavi';
+    const [currentUser, setDisplayName] = useState('');
+
   const cities = ['CHENNAI AIRPORT', 'EGMORE/ CENTRAL RAILWAY STATION', 'BANGALORE RAILWAY STATION', 'BANGALORE AIRPORT', 'VIT-MAIN GATE', 'VIT-INSIDE CAMPUS,KATPADI STATION'];
   const router=useRouter();
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        const name = user.displayName;
+        setDisplayName(name);
+      } else {
+        setDisplayName('');
+      }
+    });
+
+    return () => {
+      unsubscribe();
+    };
+  }, []);
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -103,11 +118,11 @@ const Must = () => {
     }
   };
   
-  const handleConfirmBooking = async () => {
+  const handleConfirmBooking = async (vehicle) => {
     try {
       
       setLoading1(!loading1)
-      const vechileRef = ref(db, `newuser/vechile1`);
+      const vechileRef = ref(db, `newuser/vechile1/${vehicle.vehicleNumber}`);
       const vechileSnapshot = await get(vechileRef);
       const vechileData = vechileSnapshot.val();
       const currentNoseat = vechileData.noseat;
@@ -119,7 +134,7 @@ const Must = () => {
       console.log(selectedVehicle.vehicleNumber);
       const bookingDetailsRef = ref(db, `newuser/bookings/${currentUser}`);
       await set (bookingDetailsRef,{
-        vechileNumber: selectedVehicle.vehicleNumber,
+        vehicleNumber: selectedVehicle.vehicleNumber,
       });
       
       
@@ -254,9 +269,9 @@ const Must = () => {
                       <button onClick={handlegoback} className="bg-red-500 text-white py-1 px-2 rounded-md hover:bg-red-600 transition duration-300">
                         Go Back
                       </button>
-                      <button onClick={handleConfirmBooking} className="bg-green-500 text-white py-1 px-2 rounded-md hover:bg-green-600 transition duration-300">
+                      {vehicles.map((vehicle) => (<button onClick={() => handleConfirmBooking(vehicle)} className="bg-green-500 text-white py-1 px-2 rounded-md hover:bg-green-600 transition duration-300">
                         Confirm Booking
-                      </button>
+                      </button>))}
                     </div>
                   </div>
                 )}
