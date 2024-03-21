@@ -17,7 +17,6 @@ const UserProfile = () => {
   });
 
   useEffect(() => {
-    // Check if the user is already logged in
     const unsubscribe = auth.onAuthStateChanged((user) => {
       if (user) {
         const name = user.displayName;
@@ -28,7 +27,7 @@ const UserProfile = () => {
     });
 
     return () => {
-      unsubscribe(); // Unsubscribe from the listener on component unmount
+      unsubscribe();
     };
   }, []);
 
@@ -50,8 +49,7 @@ const UserProfile = () => {
     if (displayName) {
       fetchUserDetails();
     }
-  }, [displayName]); // Fetch user details whenever displayName changes
-
+  }, [displayName]); 
   const handleChange = (e) => {
     setUserDetails({ ...userDetails, [e.target.name]: e.target.value });
   };
@@ -62,7 +60,6 @@ const UserProfile = () => {
 
   const handleSave = () => {
     setLoading(true);
-    // Update user details in the database
     update(ref(db, `newuser/userdetail/${userDetails.name}`), userDetails)
       .then(() => {
         setLoading(false);
@@ -104,14 +101,13 @@ const UserProfile = () => {
     if (displayName) {
       fetchBookingDetails();
     }
-  }, [displayName]); // Fetch booking details whenever displayName changes
-
+  }, [displayName]); 
 
   return (
     <div className="container mx-auto px-4 py-8 h-screen ">
-      <div className="flex flex-col sm:flex-row justify-around h-[50vh] gap-2">
+      <div className="flex flex-col sm:flex-row justify-around h-[65vh] sm:h-[35vh] gap-2">
         <div className="mb-8 bg-gray-400 rounded-l-3xl w-full h-full shadow-black shadow-2xl">
-          <h3 className="text-lg font-semibold mb-2 pl-4">User Details</h3>
+          <h3 className="text-lg font-semibold mb-2 pl-4">Personal Details</h3>
           <div className="flex flex-col justify-around h-full text-black">
             <div className="flex justify-around">
               <h1>Reg Number</h1>
@@ -146,7 +142,7 @@ const UserProfile = () => {
           </div>
         </div>
         <div className="mb-8 bg-gray-400 rounded-r-3xl w-full h-full shadow-black shadow-2xl">
-          <h3 className="text-lg font-semibold mb-2 pl-4 text-end pr-3">User Details</h3>
+          <h3 className="text-lg font-semibold mb-2 pl-4 text-end pr-3">Academic Details</h3>
           <div className="flex flex-col justify-around h-full text-black">
             <div className="flex justify-around">
               <h1>Graduate</h1>
@@ -205,7 +201,6 @@ const UserProfile = () => {
       </div>
       <div className="mb-8 bg-gray-400 rounded-3xl p-3 ">
           <h3 className="text-lg font-semibold text-center mb-2 pl-4  pr-3">Booking Details</h3>
-          {/* Booking details container */}
           {loading ? (
             <p>Loading...</p>
           ) : bookingDetails ? (

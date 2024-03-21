@@ -6,10 +6,7 @@ import { useRouter } from 'next/navigation';
 const UserProfile = () => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
-  const [registrationNumber, setRegistrationNumber] = useState('');
-  const [departmentName, setDepartmentName] = useState('');
-  const [address, setAddress] = useState('');
-  const [bookings, setBookings] = useState([]);
+
   const router=useRouter();
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged((user) => {
@@ -36,9 +33,6 @@ const UserProfile = () => {
       });
   };
   
-  const handleAddBooking = () => {
-    // Logic to add booking
-  };
 
   if (loading) {
     return <Loading />;
@@ -49,14 +43,14 @@ const UserProfile = () => {
   }
 
   return (
-    <div className="w-full">
+    <div className="w-full pt-3">
       <div className="flex items-center justify-between mb-4 pl-4 pr-4">
         <div className='text-black font-extrabold'>
            <Link href={"/Booking"}>
             go back
            </Link>
         </div>
-        <div className="flex flex-col items-center">
+        <div className="flex  items-center">
           {user.photoURL && (
             <img
               src={user.photoURL}

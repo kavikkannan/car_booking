@@ -1,12 +1,10 @@
 import { Inter } from 'next/font/google'
 import './globals.css'
-import Commonheader from '@/components/Common_Header';
-import Common_footer from '@/components/Common_Footer';
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
-  title: 'ISA-Domain Selection',
-  description: 'Welcome to INTERNATIONAL SOCIETY OF AUTOMATION (ISA), We are happy to introduce our domains!!',
+  title: 'CAB SHARING',
+  description: 'Share the Ride, Share the Journey',
 }
 
 export default function RootLayout({ children }) {

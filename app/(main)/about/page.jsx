@@ -1,8 +1,6 @@
 'use client';
 import React from 'react'
 import AboutPage from '@/components/About'
-import Lottie from 'lottie-react'
-import under from '@/assests/under.json'
 export default function selection() {
     return (
         

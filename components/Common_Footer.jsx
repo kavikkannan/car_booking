@@ -3,9 +3,9 @@ import Image from 'next/image';
 
 const CommonFooter = () => {
     return (
-        <footer className="bg-gray-800 text-white py-2 flex justify-between pr-2 pl-2">
-            <div className="flex items-center space-x-4">
-                <p className="mr-auto">&copy; {new Date().getFullYear()} VP-solutions. All Rights Reserved.</p>
+        <footer className="bg-gray-800 text-white py-2 flex flex-col sm:flex-row justify-center sm:justify-between gap-2 sm:gap-0 pr-2 pl-2">
+            <div className="flex justify-center  items-center space-x-4">
+                <p className="sm:mr-auto">&copy; {new Date().getFullYear()} VP-solutions. All Rights Reserved.</p>
                 
             </div>
             <div className="flex flex-col items-center justify-center space-x-4">

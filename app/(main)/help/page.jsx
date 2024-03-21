@@ -1,7 +1,5 @@
 import React from 'react'
 import Help from '@/components/Help'
-import Lottie from 'lottie-react'
-import under from '@/assests/under.json'
 export default function selection() {
     return (
         

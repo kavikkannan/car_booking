@@ -4,7 +4,7 @@ const Help = () => {
   return (
     <div className="bg-white text-black min-h-screen py-16 px-4 sm:px-6 lg:px-8">
       <div
-            className="absolute inset-x-0 -top-40 -z-3 transform-gpu overflow-hidden blur-3xl sm:top-10"
+            className="absolute inset-x-0 top-40 -z-3 transform-gpu overflow-hidden blur-3xl sm:top-10"
             aria-hidden="true"
           >
             <div

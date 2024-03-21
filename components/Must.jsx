@@ -30,7 +30,6 @@ const Must = () => {
           const vehiclesArray = [];
           for (const key in vehicleData) {
             console.log(vehicleData[key].to);
-            // Check if the vehicle's 'from', 'to', and 'mode' match the selected inputs
             if (vehicleData[key].from === from && vehicleData[key].to === to && vehicleData[key].mode === modeOfTransport && vehicleData[key].date === date) {
               vehiclesArray.push({
                 id: key,
@@ -51,21 +50,14 @@ const Must = () => {
       }
     };
     fetchData();
-  }, [from, to ,modeOfTransport]); // Dependency array includes 'from' and 'to' for re-fetching when they change
-   // No dependencies for this useEffect hook
-  
+  }, [from, to ,modeOfTransport]); 
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // Your submission logic here
-  };
  const handlegoback =()=>{
   setBookingBoxVisible(false);
   setPassengerDetails([]);
  }
  const [isLoggedIn, setIsLoggedIn] = useState(false);
     useEffect(() => {
-      // Check if the user is already logged in
       auth.onAuthStateChanged((user) => {
           if (user) {
               setIsLoggedIn(true);
@@ -115,19 +107,16 @@ const Must = () => {
     try {
       
       setLoading1(!loading1)
-      // Fetch the current noseat value
       const vechileRef = ref(db, `newuser/vechile1`);
       const vechileSnapshot = await get(vechileRef);
       const vechileData = vechileSnapshot.val();
       const currentNoseat = vechileData.noseat;
   
-      // Update the noseat value in the database by decrementing it by 1
       await set(vechileRef, {
         ...vechileData,
         noseat: currentNoseat - 1,
       });
       console.log(selectedVehicle.vehicleNumber);
-      // Update database with the user's booking information
       const bookingDetailsRef = ref(db, `newuser/bookings/${currentUser}`);
       await set (bookingDetailsRef,{
         vechileNumber: selectedVehicle.vehicleNumber,
@@ -152,7 +141,7 @@ const Must = () => {
   
     <div className="flex flex-col items-center justify-center h-screen text-green-700">
       <div
-            className="absolute flex justify-center items-center inset-x-0 -top-40 -z-1 transform-gpu overflow-hidden blur-3xl sm:top-10"
+            className="absolute flex justify-center items-center inset-x-0 top-10 -z-1 transform-gpu overflow-hidden blur-3xl sm:top-10"
             aria-hidden="true"
           >
             <div
@@ -166,7 +155,7 @@ const Must = () => {
       <h1 className="text-3xl font-bold text-black ">Cab Sharing Service</h1>
       <div className=' z-10 w-full h-full flex flex-col sm:flex-row items-center justify-evenly pt-3 sm:pt-0'>
         <div className='  flex h-[75%] w-[60%] sm:w-[40%] shadow-gray-700 shadow-2xl justify-center items-center'>
-          <form onSubmit={handleSubmit} className=" w-[75%] sm[50%] h-[50%] flex flex-col justify-evenly items-center  rounded-3xl ">
+          <form  className=" w-[75%] sm[50%] h-[50%] flex flex-col justify-evenly items-center  rounded-3xl ">
               <input 
                type="date"
                value={date}
@@ -217,7 +206,6 @@ const Must = () => {
               <>
                 {from && to && modeOfTransport && !bookingBoxVisible &&(
                   <table className="border-collapse border border-green-800 mt-4">
-                    {/* Table header */}
                     <thead>
                       <tr className="bg-green-200">
                         <th className="border border-green-600 px-4 py-2">Mode</th>
@@ -226,7 +214,6 @@ const Must = () => {
                         {!isLoggedIn &&(<th className="border border-green-600 text-red-700 px-4 py-2">login to view</th>)}
                       </tr>
                     </thead>
-                    {/* Table body */}
                     <tbody>
                       {vehicles.map((vehicle, index) => (
                         <tr key={index}>
@@ -245,34 +232,34 @@ const Must = () => {
                   </table>
                 )}
                 {bookingBoxVisible && selectedVehicle && (
-  <div className="mt-4 border border-gray-400 p-4">
-    <p><strong>Vehicle Number:</strong> {selectedVehicle.vehicleNumber}</p>
-    <p><strong>From:</strong> {from}</p>
-    <p><strong>To:</strong> {to}</p>
-    <p><strong>Passenger Details:</strong></p>
-    <div className="grid grid-cols-2 gap-4">
-      {passengerDetails.map((passenger, index) => (
-        <div key={index} className="border border-gray-300 p-2">
-          <p><strong>Name:</strong> {passenger.name}</p>
-          <p><strong>Registration Number:</strong> {passenger.regno}</p>
-          <p><strong>Phone Number:</strong> {passenger.phonenumber}</p>
-          <p><strong>Age:</strong> {passenger.age}</p>
-          <p><strong>Graduate:</strong> {passenger.graduate}</p>
-          <p><strong>Branch:</strong> {passenger.branch}</p>
-          <p><strong>Year of Passout:</strong> {passenger.yearofpassout}</p>
-        </div>
-      ))}
-    </div>
-    <div className="flex justify-between mt-4">
-      <button onClick={handlegoback} className="bg-red-500 text-white py-1 px-2 rounded-md hover:bg-red-600 transition duration-300">
-        Go Back
-      </button>
-      <button onClick={handleConfirmBooking} className="bg-green-500 text-white py-1 px-2 rounded-md hover:bg-green-600 transition duration-300">
-        Confirm Booking
-      </button>
-    </div>
-  </div>
-)}
+                  <div className="mt-4 border border-gray-400 p-4">
+                    <p><strong>Vehicle Number:</strong> {selectedVehicle.vehicleNumber}</p>
+                    <p><strong>From:</strong> {from}</p>
+                    <p><strong>To:</strong> {to}</p>
+                    <p><strong>Passenger Details:</strong></p>
+                    <div className="grid grid-cols-2 gap-4">
+                      {passengerDetails.map((passenger, index) => (
+                        <div key={index} className="border border-gray-300 p-2">
+                          <p><strong>Name:</strong> {passenger.name}</p>
+                          <p><strong>Registration Number:</strong> {passenger.regno}</p>
+                          <p><strong>Phone Number:</strong> {passenger.phonenumber}</p>
+                          <p><strong>Age:</strong> {passenger.age}</p>
+                          <p><strong>Graduate:</strong> {passenger.graduate}</p>
+                          <p><strong>Branch:</strong> {passenger.branch}</p>
+                          <p><strong>Year of Passout:</strong> {passenger.yearofpassout}</p>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="flex justify-between mt-4">
+                      <button onClick={handlegoback} className="bg-red-500 text-white py-1 px-2 rounded-md hover:bg-red-600 transition duration-300">
+                        Go Back
+                      </button>
+                      <button onClick={handleConfirmBooking} className="bg-green-500 text-white py-1 px-2 rounded-md hover:bg-green-600 transition duration-300">
+                        Confirm Booking
+                      </button>
+                    </div>
+                  </div>
+                )}
 
 
               </>

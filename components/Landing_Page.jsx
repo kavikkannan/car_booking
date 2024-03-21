@@ -1,10 +1,8 @@
-import Link from 'next/link'
-import React from 'react'
-import { useRouter } from 'next/navigation'
-import { useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
 
-const Must = () => {
+import React from 'react'
+
+
+const Landingpage = () => {
 
     return (
       <div className="bg-white">
@@ -64,4 +62,4 @@ const Must = () => {
     )
   }
 
-export default Must
+export default Landingpage
