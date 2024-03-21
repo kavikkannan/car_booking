@@ -25,11 +25,17 @@ const UserProfile = () => {
     return () => unsubscribe();
   }, []);
 
-  const handelsignout =()=>{
-    auth.signOut;
-    sessionStorage=
-    router.push("/Booking");
-  }
+  const handelsignout = () => {
+  
+    auth.signOut()
+      .then(() => {
+        router.push("/Booking");
+      })
+      .catch((error) => {
+        console.error('Error signing out:', error.message);
+      });
+  };
+  
   const handleAddBooking = () => {
     // Logic to add booking
   };
@@ -44,7 +50,7 @@ const UserProfile = () => {
 
   return (
     <div className="w-full">
-      <div className="flex items-center justify-between mb-4">
+      <div className="flex items-center justify-between mb-4 pl-4 pr-4">
         <div className='text-black font-extrabold'>
            <Link href={"/Booking"}>
             go back

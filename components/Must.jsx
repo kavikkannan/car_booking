@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Lottie from 'lottie-react';
 import under from '@/assests/Car_Anime.json';
 import { ref, get, query, orderByKey,set, update } from 'firebase/database';
-import { db } from '@/firebaseConfig';
+import { db,auth } from '@/firebaseConfig';
 import { useRouter } from 'next/navigation';
 import Loading from './Loading';
 const Must = () => {
@@ -63,15 +63,27 @@ const Must = () => {
   setBookingBoxVisible(false);
   setPassengerDetails([]);
  }
+ const [isLoggedIn, setIsLoggedIn] = useState(false);
+    useEffect(() => {
+      // Check if the user is already logged in
+      auth.onAuthStateChanged((user) => {
+          if (user) {
+              setIsLoggedIn(true);
+          } else {
+              setIsLoggedIn(false);
+          }
+      });
+  }, []);
   const handleVehicleSelection = async (vehicle) => {
     setSelectedVehicle(vehicle);
-    setBookingBoxVisible(true);
+   
   
     try {
       const snapshot = await get(ref(db, 'newuser/bookings'));
       const bookingData = snapshot.val();
-  
-      if (bookingData) {
+      if(isLoggedIn) {
+        setBookingBoxVisible(true);
+        if (bookingData) {
         const passengerDetai=[];
         for (const userName in bookingData) {
           console.log(userName);
@@ -85,10 +97,15 @@ const Must = () => {
               passengerDetai.push(passengerDetail);
             }
           }
+          
         }
         
         setPassengerDetails(passengerDetai);
       }
+    }
+    else{
+      return <p>Please sign in to view your profile.</p>;
+    }
     } catch (error) {
       console.error('Error fetching passenger details:', error);
     }
@@ -134,8 +151,20 @@ const Must = () => {
       ) : (
   
     <div className="flex flex-col items-center justify-center h-screen text-green-700">
-      <h1 className="text-3xl font-bold ">Cab Sharing Service</h1>
-      <div className=' w-full h-full flex flex-col sm:flex-row items-center justify-evenly pt-3 sm:pt-0'>
+      <div
+            className="absolute flex justify-center items-center inset-x-0 -top-40 -z-1 transform-gpu overflow-hidden blur-3xl sm:top-10"
+            aria-hidden="true"
+          >
+            <div
+              className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[80rem]"
+              style={{
+                clipPath:
+                  'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)',
+              }}
+            />
+          </div>
+      <h1 className="text-3xl font-bold text-black ">Cab Sharing Service</h1>
+      <div className=' z-10 w-full h-full flex flex-col sm:flex-row items-center justify-evenly pt-3 sm:pt-0'>
         <div className='  flex h-[75%] w-[60%] sm:w-[40%] shadow-gray-700 shadow-2xl justify-center items-center'>
           <form onSubmit={handleSubmit} className=" w-[75%] sm[50%] h-[50%] flex flex-col justify-evenly items-center  rounded-3xl ">
               <input 
@@ -177,7 +206,7 @@ const Must = () => {
                   
           </form>
         </div>
-        <div className='  flex justify-center items-center h-[75%] w-[44%]'>
+        <div className=' z-10 flex justify-center items-center h-[75%] w-[44%]'>
           <div>
             {loading ? (
               <div>
@@ -194,7 +223,7 @@ const Must = () => {
                         <th className="border border-green-600 px-4 py-2">Mode</th>
                         <th className="border border-green-600 px-4 py-2">Vehicle Number</th>
                         <th className="border border-green-600 px-4 py-2">Seats Available</th>
-                        <th className="border border-green-600 px-4 py-2"></th>
+                        {!isLoggedIn &&(<th className="border border-green-600 text-red-700 px-4 py-2">login to view</th>)}
                       </tr>
                     </thead>
                     {/* Table body */}
@@ -205,9 +234,10 @@ const Must = () => {
                           <td className="border border-green-600 px-4 py-2">{vehicle.vehicleNumber}</td>
                           <td className="border border-green-600 px-4 py-2">{vehicle.seatsAvailable}</td>
                           <td className="border border-green-600 px-4 py-2">
-                            <button onClick={() => handleVehicleSelection(vehicle)} className="bg-blue-500 text-white py-1 px-2 rounded-md hover:bg-blue-600 transition duration-300">
+                            {isLoggedIn &&(<button onClick={() => handleVehicleSelection(vehicle)} className="bg-blue-500 text-white py-1 px-2 rounded-md hover:bg-blue-600 transition duration-300">
                               Book Now
-                            </button>
+                            </button>)}
+                            
                           </td>
                         </tr>
                       ))}

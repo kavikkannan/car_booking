@@ -10,6 +10,9 @@ export default function User() {
         <div className='bg-white'>
             <User_header/>
             <UserProfile/>
+            <div className='fixed bottom-0 w-full'>
+            <CommonFooter/>
+            </div>
         </div>
     )
 }

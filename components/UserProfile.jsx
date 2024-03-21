@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { update, ref, get } from 'firebase/database';
-import { db } from '@/firebaseConfig';
+import { db, auth } from '@/firebaseConfig';
 
 const UserProfile = () => {
   const [loading, setLoading] = useState(false);
   const [editMode, setEditMode] = useState(false);
+  const [displayName, setDisplayName] = useState('');
   const [userDetails, setUserDetails] = useState({
     name: '',
     regno: '',
@@ -16,10 +17,25 @@ const UserProfile = () => {
   });
 
   useEffect(() => {
+    // Check if the user is already logged in
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        const name = user.displayName;
+        setDisplayName(name);
+      } else {
+        setDisplayName('');
+      }
+    });
+
+    return () => {
+      unsubscribe(); // Unsubscribe from the listener on component unmount
+    };
+  }, []);
+
+  useEffect(() => {
     const fetchUserDetails = async () => {
       try {
         setLoading(true);
-        const displayName = 'kavikkannan kuppusamy'; // replace with actual display name from Google Auth
         const userDetailsRef = ref(db, `newuser/userdetail/${displayName}`);
         const userDetailsSnapshot = await get(userDetailsRef);
         if (userDetailsSnapshot.exists()) {
@@ -31,8 +47,10 @@ const UserProfile = () => {
         setLoading(false);
       }
     };
-    fetchUserDetails();
-  }, []); // Run only once when the component mounts
+    if (displayName) {
+      fetchUserDetails();
+    }
+  }, [displayName]); // Fetch user details whenever displayName changes
 
   const handleChange = (e) => {
     setUserDetails({ ...userDetails, [e.target.name]: e.target.value });
@@ -55,27 +73,25 @@ const UserProfile = () => {
         setLoading(false);
       });
   };
-  const [bookingDetails, setBookingDetails] = useState([]);
+
+  const [bookingDetails, setBookingDetails] = useState(null);
   useEffect(() => {
     const fetchBookingDetails = async () => {
       try {
         setLoading(true);
-        const displayName = 'kavikkannan kuppusamy'; // replace with actual display name from Google Auth
         const bookingRef = ref(db, `newuser/bookings/${displayName}`);
         const bookingSnapshot = await get(bookingRef);
         if (bookingSnapshot.exists()) {
           const bookingData = bookingSnapshot.val();
-          // Get the vehicle details for the booked vehicle
-          const vehicleRef = ref(db, `newuser/vechile1/${bookingData.vechileNumber}`);
-
+          const vehicleRef = ref(db, `newuser/vechile1/${bookingData.vehicleNumber}`);
           const vehicleSnapshot = await get(vehicleRef);
-          
+          const v = vehicleSnapshot.val();
           if (vehicleSnapshot.exists()) {
             setBookingDetails({
               carNumber: bookingData.vehicleNumber,
-              from: vehicleSnapshot.val().from,
-              to: vehicleSnapshot.val().to,
-              date: vehicleSnapshot.val().date,
+              from: v.from,
+              to: v.to,
+              date: v.date,
             });
           }
         }
@@ -85,8 +101,11 @@ const UserProfile = () => {
         setLoading(false);
       }
     };
-    fetchBookingDetails();
-  }, []);
+    if (displayName) {
+      fetchBookingDetails();
+    }
+  }, [displayName]); // Fetch booking details whenever displayName changes
+
 
   return (
     <div className="container mx-auto px-4 py-8 h-screen ">
@@ -185,31 +204,31 @@ const UserProfile = () => {
         )}
       </div>
       <div className="mb-8 bg-gray-400 rounded-3xl p-3 ">
-          <h3 className="text-lg font-semibold mb-2 pl-4 text-end pr-3">Booking Details</h3>
+          <h3 className="text-lg font-semibold text-center mb-2 pl-4  pr-3">Booking Details</h3>
           {/* Booking details container */}
           {loading ? (
             <p>Loading...</p>
           ) : bookingDetails ? (
             <div className="flex justify-around   text-black">
               <div className="flex justify-around">
-                <h1>Car Number</h1>
+                <h1>Car Number: </h1>
                 <p>{bookingDetails.carNumber}</p>
               </div>
               <div className="flex justify-around">
-                <h1>From</h1>
+                <h1>From: </h1>
                 <p>{bookingDetails.from}</p>
               </div>
               <div className="flex justify-around">
-                <h1>To</h1>
+                <h1>To: </h1>
                 <p>{bookingDetails.to}</p>
               </div>
               <div className="flex justify-around">
-                <h1>Date</h1>
+                <h1>Date: </h1>
                 <p>{bookingDetails.date}</p>
               </div>
             </div>
           ) : (
-            <p>No booking details found</p>
+            <p className='text-center text-black'>No booking details found</p>
           )}
         </div>
     </div>
