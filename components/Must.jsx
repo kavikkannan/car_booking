@@ -120,45 +120,32 @@ const Must = () => {
   
   const handleConfirmBooking = async (vehicle) => {
     try {
-      setLoading1(true);
-      const vehicleRef = ref(db, `newuser/vechile1/${vehicle.vehicleNumber}`);
-      const vehicleSnapshot = await get(vehicleRef);
-      const vehicleData = vehicleSnapshot.val();
+      
+      setLoading1(!loading1)
+      const vechileRef = ref(db, `newuser/vechile1/${vehicle.vehicleNumber}`);
+      const vechileSnapshot = await get(vechileRef);
+      const vechileData = vechileSnapshot.val();
+      const currentNoseat = vechileData.noseat;
   
-      if (vehicleData && !isNaN(vehicleData.noseat)) {
-        
-        const currentNoseat = parseInt(vehicleData.noseat); 
-  
-        if (!isNaN(currentNoseat) && currentNoseat > 0) {
-          await set(vehicleRef, {
-            ...vehicleData,
-            noseat: currentNoseat - 1, 
-          });
-  
-          
-          const bookingDetailsRef = ref(db, `newuser/bookings/${currentUser}`);
-          await set(bookingDetailsRef, {
-            vehicleNumber: selectedVehicle.vehicleNumber,
-          });
-  
-          
-          router.push("/thank");
-          setBookingBoxVisible(false); 
-        } else {
-          console.error('Invalid noseat value:', currentNoseat);
-       
-        }
-      } else {
-        console.error('Invalid vehicle data or noseat value:', vehicleData);
-        
-      }
+      await set(vechileRef, {
+        ...vechileData,
+        noseat: currentNoseat - 1,
+      });
+      console.log(selectedVehicle.vehicleNumber);
+      const bookingDetailsRef = ref(db, `newuser/bookings/${currentUser}`);
+      await set (bookingDetailsRef,{
+        vehicleNumber: selectedVehicle.vehicleNumber,
+      });
+      
+      
+      router.push("/thank");
+      setBookingBoxVisible(false);
     } catch (error) {
       console.error('Error confirming booking:', error);
-    } finally {
-      setLoading1(false); 
+    }finally{
+      setLoading1(!loading1);
     }
   };
-  
   
   
   return (
