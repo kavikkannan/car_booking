@@ -154,7 +154,7 @@ const Must = () => {
         <Loading />
       ) : (
   
-    <div className="flex flex-col items-center justify-center h-screen text-green-700">
+    <div className="flex flex-col items-center justify-center h-screen text-black">
       <div
             className="absolute flex justify-center items-center inset-x-0 top-10 -z-1 transform-gpu overflow-hidden blur-3xl sm:top-10"
             aria-hidden="true"
@@ -220,23 +220,22 @@ const Must = () => {
             ) : (
               <>
                 {from && to && modeOfTransport && !bookingBoxVisible &&(
-                  <table className="border-collapse border border-green-800 mt-4">
-                    <thead>
-                      <tr className="bg-green-200">
-                        <th className="border border-green-600 px-4 py-2">Mode</th>
-                        <th className="border border-green-600 px-4 py-2">Vehicle Number</th>
-                        <th className="border border-green-600 px-4 py-2">Seats Available</th>
-                        {!isLoggedIn &&(<th className="border border-green-600 text-red-700 px-4 py-2">login to view</th>)}
+                  <table className="border-collapse  text-black bg-gray-400  mt-4 rounded-md overflow-hidden shadow-2xl  shadow-gray-700">                    <thead>
+                      <tr className="bg-gray-400">
+                        <th className="border border-black px-4 py-2">Mode</th>
+                        <th className="border border-black px-4 py-2">Vehicle Number</th>
+                        <th className="border border-black px-4 py-2">Seats Available</th>
+                        {!isLoggedIn &&(<th className="border  text-white px-4 py-2">login to view</th>)}
                       </tr>
                     </thead>
                     <tbody>
                       {vehicles.map((vehicle, index) => (
                         <tr key={index}>
-                          <td className="border border-green-600 px-4 py-2">{vehicle.mode}</td>
-                          <td className="border border-green-600 px-4 py-2">{vehicle.vehicleNumber}</td>
-                          <td className="border border-green-600 px-4 py-2">{vehicle.seatsAvailable}</td>
-                          <td className="border border-green-600 px-4 py-2">
-                            {isLoggedIn &&(<button onClick={() => handleVehicleSelection(vehicle)} className="bg-blue-500 text-white py-1 px-2 rounded-md hover:bg-blue-600 transition duration-300">
+                          <td className="border border-black px-4 bg-gray-200 py-2">{vehicle.mode}</td>
+                          <td className="border border-black px-4 bg-gray-200 py-2">{vehicle.vehicleNumber}</td>
+                          <td className="border border-black px-4 bg-gray-200 py-2">{vehicle.seatsAvailable}</td>
+                          <td className="border border-black px-4 bg-gray-200 py-2">
+                            {isLoggedIn &&(<button onClick={() => handleVehicleSelection(vehicle)} className="bg-green-400 text-black py-1 px-2 rounded-md hover:bg-green-600 transition duration-300">
                               Book Now
                             </button>)}
                             
@@ -257,7 +256,6 @@ const Must = () => {
                         <div key={index} className="border border-gray-300 p-2">
                           <p><strong>Name:</strong> {passenger.name}</p>
                           <p><strong>Registration Number:</strong> {passenger.regno}</p>
-                          <p><strong>Phone Number:</strong> {passenger.phonenumber}</p>
                           <p><strong>Age:</strong> {passenger.age}</p>
                           <p><strong>Graduate:</strong> {passenger.graduate}</p>
                           <p><strong>Branch:</strong> {passenger.branch}</p>
@@ -266,10 +264,10 @@ const Must = () => {
                       ))}
                     </div>
                     <div className="flex justify-between mt-4">
-                      <button onClick={handlegoback} className="bg-red-500 text-white py-1 px-2 rounded-md hover:bg-red-600 transition duration-300">
+                      <button onClick={handlegoback} className="bg-red-500 text-black font-bold py-1 px-2 rounded-md hover:bg-red-600 transition duration-300">
                         Go Back
                       </button>
-                      {vehicles.map((vehicle) => (<button onClick={() => handleConfirmBooking(vehicle)} className="bg-green-500 text-white py-1 px-2 rounded-md hover:bg-green-600 transition duration-300">
+                      {vehicles.map((vehicle) => (<button onClick={() => handleConfirmBooking(vehicle)} className="bg-green-500 font-bold text-black py-1 px-2 rounded-md hover:bg-green-600 transition duration-300">
                         Confirm Booking
                       </button>))}
                     </div>

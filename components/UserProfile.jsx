@@ -104,8 +104,8 @@ const UserProfile = () => {
   }, [displayName]); 
 
   return (
-    <div className="container mx-auto px-4 py-8 h-screen ">
-      <div className="flex flex-col sm:flex-row justify-around h-[65vh] sm:h-[35vh] gap-2">
+    <div className="container mx-auto px-4 py-8   h-[60rem] flex flex-col justify-center ">
+      <div className="flex flex-col sm:flex-row justify-around h-[65vh] sm:h-[35vh] gap-8">
         <div className="mb-8 bg-gray-400 rounded-l-3xl w-full h-full shadow-black shadow-2xl">
           <h3 className="text-lg font-semibold mb-2 pl-4">Personal Details</h3>
           <div className="flex flex-col justify-around h-full text-black">
