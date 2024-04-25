@@ -5,7 +5,7 @@ import React from 'react'
 const Landingpage = () => {
 
     return (
-      <div className=" bg-pink-300">
+      <div className=" bg-white">
         
   
         <div className="relative isolate px-6 pt-14 lg:px-8">
